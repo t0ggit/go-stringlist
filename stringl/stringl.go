@@ -26,6 +26,12 @@ func (sol *StrOnList) Len() int64 {
 
 // Inject вставляет другую строку на списке в эту строку на списке по индексу
 func (sol *StrOnList) Inject(other *StrOnList, index int64) (ok bool) {
+	if sol.list.Len() == 0 {
+		return false
+	}
+	if other.list.Len() == 0 {
+		return false
+	}
 	return sol.list.Inject(other.list, index)
 }
 
