@@ -102,9 +102,16 @@ func TestStrOnList_Substring(t *testing.T) {
 	assert.Equal(t, "World", sl.Substring(7, 12).String())
 }
 
-func TestStrOnList_Replace(t *testing.T) {
+func TestStrOnList_ReplaceAll(t *testing.T) {
 	sl := New("Hello, World!")
-	sl.Replace('H', 'h')
-	assert.Equal(t, "hello, World!", sl.String())
+	sl.ReplaceAll('o', '0')
+	assert.Equal(t, "Hell0, W0rld!", sl.String())
+	assert.Equal(t, int64(13), sl.Len())
+}
+
+func TestStrOnList_ReplaceOnce(t *testing.T) {
+	sl := New("Hello, World!")
+	sl.ReplaceOnce('l', '1')
+	assert.Equal(t, "He1lo, World!", sl.String())
 	assert.Equal(t, int64(13), sl.Len())
 }

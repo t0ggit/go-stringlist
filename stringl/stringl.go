@@ -48,6 +48,9 @@ func (sol *StrOnList) Insert(r rune, index int64) (ok bool) {
 
 // Remove удаляет rune по индексу
 func (sol *StrOnList) Remove(index int64) (ok bool) {
+	if sol.list.Len() == 0 {
+		return false
+	}
 	return sol.list.RemoveByIndex(index)
 }
 
@@ -67,6 +70,12 @@ func (sol *StrOnList) At(index int64) (value rune, ok bool) {
 
 // Concat конкатенирует две строки
 func (sol *StrOnList) Concat(other *StrOnList) *StrOnList {
+	if other.Len() == 0 {
+		return sol
+	}
+	if sol.Len() == 0 {
+		return other
+	}
 	s1 := New(sol.String())
 	ok := s1.Inject(other, s1.Len())
 	if !ok {
@@ -96,13 +105,25 @@ func (sol *StrOnList) Substring(from, to int64) *StrOnList {
 	}
 }
 
-// Replace заменяет все rune в строке
-func (sol *StrOnList) Replace(old, new rune) {
+// ReplaceAll заменяет все rune в строке
+func (sol *StrOnList) ReplaceAll(old, new rune) {
 	for i := int64(0); i < sol.Len(); i++ {
 		v, ok := sol.At(i)
 		if ok && v == old {
 			sol.Remove(i)
 			sol.Insert(new, i)
+		}
+	}
+}
+
+// ReplaceOnce заменяет первое вхождение rune в строке
+func (sol *StrOnList) ReplaceOnce(old, new rune) {
+	for i := int64(0); i < sol.Len(); i++ {
+		v, ok := sol.At(i)
+		if ok && v == old {
+			sol.Remove(i)
+			sol.Insert(new, i)
+			return
 		}
 	}
 }
